@@ -1,8 +1,8 @@
 ---
 title: 'Another Test Post'
 publishedAt: '2023-04-28'
-banner: 'https://raw.githubusercontent.com/gitdagray/test-blogposts/main/images/NextLevel1.png'
-description: 'Another description wkkwkwkwk'
+banner: 'https://raw.githubusercontent.com/gitdagray/test-blogposts/main/images/NextLevel1.png',
+description: 'Another description wkkwkwkwk',
 tags: ['next.js','nextjs','new']
 ---
 
@@ -10,10 +10,10 @@ We recommend using **Static Generation** (with and without data) whenever possib
 
 ```ts
 const sum = (num1: number, num2: number): number => {
-    return num1 + num2
-}
+  return num1 + num2;
+};
 
-console.log(sum(4,8)) //12
+console.log(sum(4, 8)); //12
 ```
 
 You can use Static Generation for many types of pages, including:
@@ -25,8 +25,10 @@ You can use Static Generation for many types of pages, including:
 
 You should ask yourself: "Can I pre-render this page **ahead** of a user's request?" If the answer is yes, then you should choose Static Generation.
 
-
-<CustomImage src="https://raw.githubusercontent.com/gitdagray/test-blogposts/main/images/NextLevel1.png" alt="Warning: Next Level Ahead" />
+<CustomImage
+  src="https://raw.githubusercontent.com/gitdagray/test-blogposts/main/images/NextLevel1.png"
+  alt="Warning: Next Level Ahead"
+/>
 
 On the other hand, Static Generation is **not** a good idea if you cannot pre-render a page ahead of a user's request. Maybe your page shows frequently uppublishedAtd data, and the page content changes on every request.
 
