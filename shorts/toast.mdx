@@ -1,7 +1,7 @@
 ---
-title: 'React Hot Toast'
-tags: 'nextjs,react'
-description: 'Current favorite lib for toast notifications, with some custom hook and implementation'
+title: "React Hot Toast"
+tags: ["nextjs", "react"]
+description: "Current favorite lib for toast notifications, with some custom hook and implementation"
 ---
 
 ## React Hot Toast
@@ -19,11 +19,11 @@ yarn add react-hot-toast
 Add the div to `_app.ts` or `App.tsx`
 
 ```tsx
-import { AppProps } from 'next/app';
+import { AppProps } from "next/app";
 
-import '@/styles/globals.css';
+import "@/styles/globals.css";
 
-import DismissableToast from '@/components/DismissableToast';
+import DismissableToast from "@/components/DismissableToast";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -42,21 +42,21 @@ export default MyApp;
 React hot toast doesn't support dismiss button by default, so I use a custom component to add it.
 
 ```tsx
-import * as React from 'react';
-import { toast, ToastBar, Toaster } from 'react-hot-toast';
-import { HiX } from 'react-icons/hi';
+import * as React from "react";
+import { toast, ToastBar, Toaster } from "react-hot-toast";
+import { HiX } from "react-icons/hi";
 
 export default function DismissableToast() {
   return (
     <div>
       <Toaster
         reverseOrder={false}
-        position='top-center'
+        position="top-center"
         toastOptions={{
           style: {
-            borderRadius: '8px',
-            background: '#333',
-            color: '#fff',
+            borderRadius: "8px",
+            background: "#333",
+            color: "#fff",
           },
         }}
       >
@@ -66,9 +66,9 @@ export default function DismissableToast() {
               <>
                 {icon}
                 {message}
-                {t.type !== 'loading' && (
+                {t.type !== "loading" && (
                   <button
-                    className='rounded-full p-1 ring-primary-400 transition hover:bg-[#444] focus:outline-none focus-visible:ring'
+                    className="rounded-full p-1 ring-primary-400 transition hover:bg-[#444] focus:outline-none focus-visible:ring"
                     onClick={() => toast.dismiss(t.id)}
                   >
                     <HiX />
@@ -87,11 +87,11 @@ export default function DismissableToast() {
 ## Usage
 
 ```tsx
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 function addSomething() {
-  toast.success('message');
-  toast.error('message');
+  toast.success("message");
+  toast.error("message");
 }
 ```
 
@@ -102,24 +102,24 @@ With promise, we don't need to use `toast.success` or `toast.error`, but directl
 ```tsx
 toast.promise(
   axios
-    .post('/user/login', data)
+    .post("/user/login", data)
     .then((res) => {
       const { jwt: token } = res.data.data;
       tempToken = token;
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
 
       // chaining axios in 1 promise
-      return axios.get('/user/get-user-info');
+      return axios.get("/user/get-user-info");
     })
     .then((user) => {
       const role = user.data.data.user_role;
-      dispatch('LOGIN', { ...user.data.data, token: tempToken });
+      dispatch("LOGIN", { ...user.data.data, token: tempToken });
 
-      history.replace('/');
+      history.replace("/");
     }),
   {
-    loading: 'Loading...',
-    success: 'Success',
+    loading: "Loading...",
+    success: "Success",
     error: (err) => err.response.data.msg,
   }
 );
@@ -131,11 +131,11 @@ You can compose it with default message
 
 ```tsx
 export const defaultToastMessage = {
-  loading: 'Loading...',
-  success: 'Data fetched successfully',
+  loading: "Loading...",
+  success: "Data fetched successfully",
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: (err: any) =>
-    err?.response?.data?.msg ?? 'Something is wrong, please try again',
+    err?.response?.data?.msg ?? "Something is wrong, please try again",
 };
 ```
 
@@ -144,7 +144,7 @@ export const defaultToastMessage = {
 Using a `useLoadingToast` hook we can get access if there is any loading toast showing, then use it to disable button.
 
 ```tsx
-import { useToasterStore } from 'react-hot-toast';
+import { useToasterStore } from "react-hot-toast";
 
 /**
  * Hook to get information whether something is loading
@@ -153,7 +153,7 @@ import { useToasterStore } from 'react-hot-toast';
  */
 export default function useLoadingToast(): boolean {
   const { toasts } = useToasterStore();
-  const isLoading = toasts.some((toast) => toast.type === 'loading');
+  const isLoading = toasts.some((toast) => toast.type === "loading");
   return isLoading;
 }
 ```
@@ -163,13 +163,13 @@ export default function useLoadingToast(): boolean {
 This hook will handle loading and error state from SWR and show toast on initial fetch. Revalidating will not trigger loading toast.
 
 ```tsx
-import * as React from 'react';
-import toast from 'react-hot-toast';
-import { SWRResponse } from 'swr';
+import * as React from "react";
+import toast from "react-hot-toast";
+import { SWRResponse } from "swr";
 
-import { defaultToastMessage } from '@/lib/helper';
+import { defaultToastMessage } from "@/lib/helper";
 
-import useLoadingToast from '@/hooks/useLoadingToast';
+import useLoadingToast from "@/hooks/useLoadingToast";
 
 type OptionType = {
   runCondition?: boolean;
@@ -184,7 +184,7 @@ export default function useWithToast<T, E>(
 ) {
   const { data, error } = swr;
 
-  const toastStatus = React.useRef<string>(data ? 'done' : 'idle');
+  const toastStatus = React.useRef<string>(data ? "done" : "idle");
 
   const toastMessage = {
     ...defaultToastMessage,
@@ -196,14 +196,14 @@ export default function useWithToast<T, E>(
 
     // if toastStatus is done,
     // then it is not the first render or the data is already cached
-    if (toastStatus.current === 'done') return;
+    if (toastStatus.current === "done") return;
 
     if (error) {
       toast.error(toastMessage.error, { id: toastStatus.current });
-      toastStatus.current = 'done';
+      toastStatus.current = "done";
     } else if (data) {
       toast.success(toastMessage.success, { id: toastStatus.current });
-      toastStatus.current = 'done';
+      toastStatus.current = "done";
     } else {
       toastStatus.current = toast.loading(toastMessage.loading);
     }
@@ -230,9 +230,9 @@ You can use it with the `useSWR` hook
 
 ```tsx
 const { data: pokemonData, isLoading } = useWithToast(
-  useSWR<PokemonList>('https://pokeapi.co/api/v2/pokemon?limit=20'),
+  useSWR<PokemonList>("https://pokeapi.co/api/v2/pokemon?limit=20"),
   {
-    loading: 'Override Loading',
+    loading: "Override Loading",
   }
 );
 ```
